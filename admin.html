@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão | Seleção 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="dashboard-body">
+  <div id="loginView" class="login-wrap">
+    <div class="login-card">
+      <img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo">
+      <h2>Gestão</h2>
+      <p>Acesso restrito à equipe responsável pela Seleção 2027.</p>
+      <label>Login / e-mail
+        <input id="adminEmail" type="email" placeholder="seu-email@colegio.com.br">
+      </label>
+      <label>Senha
+        <input id="adminPassword" type="password" placeholder="••••••••">
+      </label>
+      <button id="loginButton" class="btn primary" style="width:100%;margin-top:22px">ENTRAR</button>
+      <div id="loginError" class="error"></div>
+    </div>
+  </div>
+
+  <div id="dashboardView" class="admin-shell hidden">
+    <aside class="sidebar">
+      <img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo">
+      <div class="nav">
+        <button class="active" data-tab="overview">Visão Geral</button>
+        <button data-tab="candidates">Candidatos</button>
+        <button data-tab="exams">Provas</button>
+        <button data-tab="settings">Configurações</button>
+      </div>
+      <button id="logoutButton" class="btn ghost" style="margin-top:28px;width:100%">Sair</button>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-top">
+        <div>
+          <div class="step">SELEÇÃO 2027</div>
+          <h1>Gestão</h1>
+          <p>Acompanhamento das inscrições para a Prova de Admissão.</p>
+        </div>
+      </div>
+
+      <section id="overviewTab">
+        <div class="stats">
+          <div class="stat"><strong id="statTotal">0</strong><span>Inscrições</span></div>
+          <div class="stat"><strong id="statNextExam">0</strong><span>Próxima prova</span></div>
+          <div class="stat"><strong id="statToday">0</strong><span>Inscrições hoje</span></div>
+          <div class="stat"><strong id="statSeries">0</strong><span>Séries com inscritos</span></div>
+        </div>
+        <div class="cards">
+          <div class="panel">
+            <h3>Próxima prova</h3>
+            <div id="nextExamCard"></div>
+          </div>
+          <div class="panel">
+            <h3>Próximas datas</h3>
+            <div id="upcomingExamDates"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="candidatesTab" class="hidden">
+        <div class="panel">
+          <h3>Candidatos</h3>
+          <input id="candidateSearch" type="search" placeholder="Buscar por aluno, responsável ou escola">
+          <div style="overflow:auto;margin-top:18px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Candidato</th><th>Segmento</th><th>Série</th><th>Responsável</th>
+                  <th>WhatsApp</th><th>Escola atual</th><th>Data</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="candidatesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="examsTab" class="hidden">
+        <div class="panel">
+          <h3>Provas</h3>
+          <div id="examManagement"></div>
+        </div>
+      </section>
+
+      <section id="settingsTab" class="hidden">
+        <div class="panel">
+          <h3>Configurações</h3>
+          <p>As credenciais administrativas devem ser gerenciadas no Supabase Auth. Não armazene senhas no código do site.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>

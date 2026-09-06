@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seleção 2027 | Colégio Evolução</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="decor decor-orange decor-top"></div>
+  <div class="decor decor-blue decor-right"></div>
+
+  <header class="site-header">
+    <img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo">
+  </header>
+
+  <main class="container">
+    <section id="cover" class="screen active cover">
+      <div class="eyebrow">SELEÇÃO 2027</div>
+      <h1>Garanta sua vaga <span>entre os melhores!</span></h1>
+      <p class="lead">Faça sua inscrição para o processo de Seleção 2027 do Colégio Evolução.</p>
+      <button class="btn primary" data-next="segment">FAZER MINHA INSCRIÇÃO <span>→</span></button>
+    </section>
+
+    <section id="segment" class="screen">
+      <div class="step">01</div>
+      <h2>Qual segmento deseja ingressar?</h2>
+      <div class="choice-grid">
+        <button class="choice" data-segment="Educação Infantil">Educação Infantil</button>
+        <button class="choice" data-segment="Ensino Fundamental Anos Iniciais">Ensino Fundamental Anos Iniciais</button>
+        <button class="choice" data-segment="Ensino Fundamental Anos Finais">Ensino Fundamental Anos Finais</button>
+        <button class="choice" data-segment="Ensino Médio">Ensino Médio</button>
+      </div>
+    </section>
+
+    <section id="series" class="screen">
+      <div class="step">02</div>
+      <h2>Qual série pretende ingressar?</h2>
+      <div id="seriesOptions" class="choice-grid"></div>
+      <button class="btn ghost" data-back="segment">← Voltar</button>
+    </section>
+
+    <section id="student" class="screen">
+      <div class="step">03</div>
+      <h2>Sobre o futuro aluno</h2>
+
+      <div class="form-grid">
+        <label>
+          Nome completo
+          <input id="studentName" type="text" placeholder="Nome completo do candidato" required>
+        </label>
+        <label>
+          Data de nascimento
+          <input id="birthDate" type="date" required>
+        </label>
+        <label>
+          Série pretendida
+          <input id="selectedSeries" type="text" readonly>
+        </label>
+        <label id="studentPhoneField" class="hidden">
+          Telefone do aluno
+          <input id="studentPhone" type="tel" placeholder="(83) 99999-9999">
+        </label>
+      </div>
+
+      <h3>Dados do responsável</h3>
+      <div class="form-grid">
+        <label>
+          Nome completo do responsável
+          <input id="guardianName" type="text" required>
+        </label>
+        <label>
+          RG
+          <input id="guardianRg" type="text" required>
+        </label>
+        <label>
+          CPF
+          <input id="guardianCpf" type="text" inputmode="numeric" required>
+        </label>
+        <label>
+          WhatsApp
+          <input id="guardianWhatsapp" type="tel" required>
+        </label>
+        <label>
+          E-mail
+          <input id="guardianEmail" type="email" required>
+        </label>
+        <label>
+          Escola atual do aluno
+          <input id="currentSchool" type="text" required>
+        </label>
+      </div>
+
+      <label class="consent">
+        <input id="privacyConsent" type="checkbox" required>
+        <span>Autorizo o uso dos dados informados exclusivamente para fins de contato, inscrição e organização do processo de Seleção 2027.</span>
+      </label>
+
+      <div class="actions">
+        <button class="btn ghost" data-back="series">← Voltar</button>
+        <button id="studentNext" class="btn primary">CONTINUAR →</button>
+      </div>
+    </section>
+
+    <section id="date" class="screen">
+      <div class="step">04</div>
+      <h2>Escolha uma data disponível para a sua prova de Seleção</h2>
+      <div id="dateOptions" class="choice-grid"></div>
+      <div class="actions">
+        <button class="btn ghost" data-back="student">← Voltar</button>
+      </div>
+    </section>
+
+    <section id="visit" class="screen">
+      <div class="step">04</div>
+      <h2>Agendar visita</h2>
+      <div class="info-card">
+        <h3>Vamos agendar sua visita 💙</h3>
+        <p>Recebemos seus dados. Nossa equipe entrará em contato para combinar o melhor dia e horário para sua visita ao Colégio Evolução.</p>
+        <p>Será um prazer receber sua família e apresentar de perto a nossa proposta para a Educação Infantil.</p>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" data-back="student">← Voltar</button>
+        <button id="visitConfirm" class="btn primary">CONFIRMAR INTERESSE →</button>
+      </div>
+    </section>
+
+    <section id="review" class="screen">
+      <div class="step">05</div>
+      <h2>Confira sua inscrição</h2>
+      <div id="reviewCard" class="review-card"></div>
+      <div class="actions">
+        <button class="btn ghost" data-back="date">Editar informações</button>
+        <button id="confirmApplication" class="btn primary">CONFIRMAR INSCRIÇÃO</button>
+      </div>
+    </section>
+
+    <section id="success" class="screen success">
+      <div class="success-mark">✓</div>
+      <h2>Inscrição realizada!</h2>
+      <h3>Que bom ter você por aqui!</h3>
+      <p id="successText"></p>
+      <strong id="successDate"></strong>
+      <p class="final-message">Este é o primeiro passo para fazer parte do <b>Evolução</b>. 💙</p>
+    </section>
+
+    <section id="visitSuccess" class="screen success">
+      <div class="success-mark">✓</div>
+      <h2>Interesse registrado!</h2>
+      <h3>Que bom ter você por aqui!</h3>
+      <p>Nossa equipe entrará em contato para combinar o melhor dia e horário para sua visita ao Colégio Evolução.</p>
+      <p class="final-message">Será um prazer receber sua família. 💙</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Colégio Evolução</span>
+    <a href="./admin.html" class="admin-link" tabindex="-1" aria-hidden="true">.</a>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
