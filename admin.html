@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Gestão | Seleção 2027</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="dashboard-body">
   <div id="loginView" class="login-wrap">
     <div class="login-card">
-      <img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo">
-      <h2>Gestão</h2>
-      <p>Acesso restrito à equipe responsável pela Seleção 2027.</p>
-      <label>Login / e-mail
-        <input id="adminEmail" type="email" placeholder="seu-email@colegio.com.br">
-      </label>
-      <label>Senha
-        <input id="adminPassword" type="password" placeholder="••••••••">
-      </label>
+      <img src="./assets/logo-evolucao.png" class="logo" alt="Colégio Evolução">
+      <h2>Gestão</h2><p>Acesso restrito à equipe responsável pela Seleção 2027.</p>
+      <label>Login / e-mail<input id="adminEmail" type="email"></label>
+      <label>Senha<input id="adminPassword" type="password"></label>
       <button id="loginButton" class="btn primary" style="width:100%;margin-top:22px">ENTRAR</button>
       <div id="loginError" class="error"></div>
     </div>
@@ -28,7 +22,7 @@
 
   <div id="dashboardView" class="admin-shell hidden">
     <aside class="sidebar">
-      <img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo">
+      <img src="./assets/logo-evolucao.png" class="logo" alt="Colégio Evolução">
       <div class="nav">
         <button class="active" data-tab="overview">Visão Geral</button>
         <button data-tab="candidates">Candidatos</button>
@@ -39,13 +33,7 @@
     </aside>
 
     <main class="admin-main">
-      <div class="admin-top">
-        <div>
-          <div class="step">SELEÇÃO 2027</div>
-          <h1>Gestão</h1>
-          <p>Acompanhamento das inscrições para a Prova de Admissão.</p>
-        </div>
-      </div>
+      <div class="admin-top"><div><div class="step">SELEÇÃO 2027</div><h1>Gestão</h1><p>Acompanhamento das inscrições para a Prova de Seleção.</p></div></div>
 
       <section id="overviewTab">
         <div class="stats">
@@ -55,49 +43,66 @@
           <div class="stat"><strong id="statSeries">0</strong><span>Séries com inscritos</span></div>
         </div>
         <div class="cards">
-          <div class="panel">
-            <h3>Próxima prova</h3>
-            <div id="nextExamCard"></div>
-          </div>
-          <div class="panel">
-            <h3>Próximas datas</h3>
-            <div id="upcomingExamDates"></div>
-          </div>
+          <div class="panel"><h3>Próxima prova</h3><div id="nextExamCard"></div></div>
+          <div class="panel"><h3>Próximas datas</h3><div id="upcomingExamDates"></div></div>
         </div>
       </section>
 
       <section id="candidatesTab" class="hidden">
         <div class="panel">
-          <h3>Candidatos</h3>
-          <input id="candidateSearch" type="search" placeholder="Buscar por aluno, responsável ou escola">
-          <div style="overflow:auto;margin-top:18px">
+          <div class="section-header">
+            <div><h3 style="margin-bottom:4px">Candidatos</h3><p class="muted">Inscrições do site e cadastros feitos diretamente pelo CRM.</p></div>
+            <div class="toolbar-actions"><button id="addCandidateBtn" class="btn primary">+ ADICIONAR ALUNO</button><button id="exportPdfBtn" class="btn ghost">GERAR PDF</button></div>
+          </div>
+
+          <div class="filters">
+            <input id="candidateSearch" type="search" placeholder="Buscar aluno, responsável ou escola">
+            <select id="dateFilter"><option value="">Todas as datas</option></select>
+            <select id="segmentFilter">
+              <option value="">Todos os segmentos</option>
+              <option>Educação Infantil</option>
+              <option>Ensino Fundamental Anos Iniciais</option>
+              <option>Ensino Fundamental Anos Finais</option>
+              <option>Ensino Médio</option>
+            </select>
+            <button id="clearFiltersBtn" class="btn ghost">Limpar filtros</button>
+          </div>
+          <div id="candidateCount" class="filter-summary"></div>
+
+          <div style="overflow:auto;margin-top:12px">
             <table>
-              <thead>
-                <tr>
-                  <th>Candidato</th><th>Segmento</th><th>Série</th><th>Responsável</th>
-                  <th>WhatsApp</th><th>Escola atual</th><th>Data</th><th>Status</th>
-                </tr>
-              </thead>
+              <thead><tr>
+                <th>Candidato</th><th>Segmento</th><th>Série</th><th>Responsável</th><th>WhatsApp</th><th>Escola</th>
+                <th>Data</th><th>Origem</th><th>Pagamento</th><th>Comprovante</th><th>Status</th><th>Ações</th>
+              </tr></thead>
               <tbody id="candidatesBody"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <section id="examsTab" class="hidden">
-        <div class="panel">
-          <h3>Provas</h3>
-          <div id="examManagement"></div>
-        </div>
-      </section>
-
-      <section id="settingsTab" class="hidden">
-        <div class="panel">
-          <h3>Configurações</h3>
-          <p>As credenciais administrativas devem ser gerenciadas no Supabase Auth. Não armazene senhas no código do site.</p>
-        </div>
-      </section>
+      <section id="examsTab" class="hidden"><div class="panel"><h3>Provas</h3><div id="examManagement"></div></div></section>
+      <section id="settingsTab" class="hidden"><div class="panel"><h3>Configurações</h3><p>Credenciais administrativas gerenciadas pelo Supabase Auth.</p></div></section>
     </main>
+  </div>
+
+  <div id="candidateModal" class="modal hidden">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card">
+      <div class="modal-header"><div><div class="step">CRM</div><h3 id="candidateModalTitle">Adicionar aluno</h3></div><button class="modal-close" data-close-modal>×</button></div>
+      <div class="form-grid">
+        <label>Segmento<select id="crmSegment"><option value="">Selecione</option><option>Educação Infantil</option><option>Ensino Fundamental Anos Iniciais</option><option>Ensino Fundamental Anos Finais</option><option>Ensino Médio</option></select></label>
+        <label>Série<select id="crmSeries"><option value="">Selecione o segmento</option></select></label>
+        <label>Nome do candidato<input id="crmStudentName"></label><label>Data de nascimento<input id="crmBirthDate" type="date"></label>
+        <label id="crmStudentPhoneWrap" class="hidden">Telefone do aluno<input id="crmStudentPhone"></label>
+        <label>Nome do responsável<input id="crmGuardianName"></label><label>RG<input id="crmGuardianRg"></label><label>CPF<input id="crmGuardianCpf"></label>
+        <label>WhatsApp<input id="crmGuardianWhatsapp"></label><label>E-mail<input id="crmGuardianEmail" type="email"></label><label>Escola atual<input id="crmCurrentSchool"></label>
+        <label>Data da prova<select id="crmExamDate"><option value="">Selecione</option></select></label>
+        <label>Status<select id="crmStatus"><option>Inscrição confirmada</option><option>Visita a agendar</option><option>Inscrição cancelada</option></select></label>
+        <label>Status do pagamento<select id="crmPaymentStatus"><option>Aguardando conferência</option><option>Comprovante enviado</option><option>Pagamento confirmado</option><option>Pagamento recusado</option><option>Isento</option></select></label>
+      </div>
+      <div class="actions"><button class="btn ghost" data-close-modal>Cancelar</button><button id="saveCandidateBtn" class="btn primary">SALVAR ALUNO</button></div>
+    </div>
   </div>
 
   <script type="module" src="./admin.js"></script>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seleção 2027 | Colégio Evolução</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="decor decor-orange decor-top"></div>
@@ -48,55 +48,45 @@
       <h2>Sobre o futuro aluno</h2>
 
       <div class="form-grid">
-        <label>
-          Nome completo
-          <input id="studentName" type="text" placeholder="Nome completo do candidato" required>
+        <label>Nome completo
+          <input id="studentName" type="text" placeholder="Nome completo do candidato">
         </label>
-        <label>
-          Data de nascimento
-          <input id="birthDate" type="date" required>
+        <label>Data de nascimento
+          <input id="birthDate" type="date">
         </label>
-        <label>
-          Série pretendida
+        <label>Série pretendida
           <input id="selectedSeries" type="text" readonly>
         </label>
-        <label id="studentPhoneField" class="hidden">
-          Telefone do aluno
+        <label id="studentPhoneField" class="hidden">Telefone do aluno
           <input id="studentPhone" type="tel" placeholder="(83) 99999-9999">
         </label>
       </div>
 
       <h3>Dados do responsável</h3>
       <div class="form-grid">
-        <label>
-          Nome completo do responsável
-          <input id="guardianName" type="text" required>
+        <label>Nome completo do responsável
+          <input id="guardianName" type="text">
         </label>
-        <label>
-          RG
-          <input id="guardianRg" type="text" required>
+        <label>RG
+          <input id="guardianRg" type="text">
         </label>
-        <label>
-          CPF
-          <input id="guardianCpf" type="text" inputmode="numeric" required>
+        <label>CPF
+          <input id="guardianCpf" type="text" inputmode="numeric">
         </label>
-        <label>
-          WhatsApp
-          <input id="guardianWhatsapp" type="tel" required>
+        <label>WhatsApp
+          <input id="guardianWhatsapp" type="tel">
         </label>
-        <label>
-          E-mail
-          <input id="guardianEmail" type="email" required>
+        <label>E-mail
+          <input id="guardianEmail" type="email">
         </label>
-        <label>
-          Escola atual do aluno
-          <input id="currentSchool" type="text" required>
+        <label>Escola em que o aluno estuda atualmente
+          <input id="currentSchool" type="text">
         </label>
       </div>
 
       <label class="consent">
-        <input id="privacyConsent" type="checkbox" required>
-        <span>Autorizo o uso dos dados informados exclusivamente para fins de contato, inscrição e organização do processo de Seleção 2027.</span>
+        <input id="privacyConsent" type="checkbox">
+        <span>Autorizo o uso dos dados informados exclusivamente para fins de contato, inscrição, organização da Seleção 2027 e conferência do pagamento.</span>
       </label>
 
       <div class="actions">
@@ -128,12 +118,48 @@
       </div>
     </section>
 
-    <section id="review" class="screen">
+    <section id="payment" class="screen">
       <div class="step">05</div>
+      <h2>Pagamento da inscrição</h2>
+
+      <div class="payment-layout">
+        <div class="payment-visual">
+          <img src="./assets/pagamento-selecao-2027.png" alt="Dados para pagamento da Seleção 2027">
+        </div>
+
+        <div class="info-card payment-upload">
+          <h3>Envie o comprovante</h3>
+          <p>Após realizar o PIX de <strong>R$ 30,00</strong>, anexe o comprovante para concluir sua inscrição.</p>
+
+          <label class="upload-box" for="paymentReceipt">
+            <input id="paymentReceipt" type="file" accept=".pdf,image/jpeg,image/png,image/webp" hidden>
+            <span class="upload-icon">↑</span>
+            <strong>Selecionar comprovante</strong>
+            <small>PDF, JPG, PNG ou WEBP · máximo 8 MB</small>
+          </label>
+
+          <div id="receiptFileName" class="file-name">Nenhum arquivo selecionado</div>
+
+          <div class="pix-shortcut">
+            <span>Chave PIX</span>
+            <strong>83 99196-8537</strong>
+            <button id="copyPixBtn" class="btn ghost" type="button">COPIAR CHAVE</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" data-back="date">← Voltar</button>
+        <button id="paymentNext" class="btn primary">CONTINUAR →</button>
+      </div>
+    </section>
+
+    <section id="review" class="screen">
+      <div class="step">06</div>
       <h2>Confira sua inscrição</h2>
       <div id="reviewCard" class="review-card"></div>
       <div class="actions">
-        <button class="btn ghost" data-back="date">Editar informações</button>
+        <button class="btn ghost" data-back="payment">Editar informações</button>
         <button id="confirmApplication" class="btn primary">CONFIRMAR INSCRIÇÃO</button>
       </div>
     </section>
@@ -144,7 +170,7 @@
       <h3>Que bom ter você por aqui!</h3>
       <p id="successText"></p>
       <strong id="successDate"></strong>
-      <p class="final-message">Este é o primeiro passo para fazer parte do <b>Evolução</b>. 💙</p>
+      <p class="final-message">Seu comprovante foi enviado para conferência. Este é o primeiro passo para fazer parte do <b>Evolução</b>. 💙</p>
     </section>
 
     <section id="visitSuccess" class="screen success">
@@ -156,11 +182,7 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <span>Colégio Evolução</span>
-    <a href="./admin.html" class="admin-link" tabindex="-1" aria-hidden="true">.</a>
-  </footer>
-
+  <footer class="footer">Colégio Evolução</footer>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

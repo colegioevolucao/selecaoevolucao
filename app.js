@@ -1,211 +1,139 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const SUPABASE_URL = 'https://sqqozfohvkxfkjydxkiw.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_Fcm35rSx0XDCdjtvetyRLg_iymciHct';
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL='https://sqqozfohvkxfkjydxkiw.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_Fcm35rSx0XDCdjtvetyRLg_iymciHct';
+const supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const state = {
-  segment: '',
-  series: '',
-  studentName: '',
-  birthDate: '',
-  studentPhone: '',
-  guardianName: '',
-  guardianRg: '',
-  guardianCpf: '',
-  guardianWhatsapp: '',
-  guardianEmail: '',
-  currentSchool: '',
-  examDate: '',
-  examTime: ''
+const PIX_KEY='83 99196-8537';
+const $=id=>document.getElementById(id);
+const state={segment:'',series:'',studentName:'',birthDate:'',studentPhone:'',guardianName:'',guardianRg:'',guardianCpf:'',guardianWhatsapp:'',guardianEmail:'',currentSchool:'',examDate:'',examTime:'',receiptFile:null};
+
+const screens=[...document.querySelectorAll('.screen')];
+function show(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>show(b.dataset.next));
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>show(b.dataset.back));
+
+const seriesMap={
+ 'Ensino Fundamental Anos Iniciais':['1º ano','2º ano','3º ano','4º ano','5º ano'],
+ 'Ensino Fundamental Anos Finais':['6º ano','7º ano','8º ano','9º ano'],
+ 'Ensino Médio':['1ª série','2ª série','3ª série']
 };
 
-const screens = [...document.querySelectorAll('.screen')];
-function show(id){
-  screens.forEach(s => s.classList.toggle('active', s.id === id));
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-document.querySelectorAll('[data-next]').forEach(btn => {
-  btn.addEventListener('click', () => show(btn.dataset.next));
-});
-document.querySelectorAll('[data-back]').forEach(btn => {
-  btn.addEventListener('click', () => show(btn.dataset.back));
-});
-
-const seriesMap = {
-  'Ensino Fundamental Anos Iniciais': ['1º ano','2º ano','3º ano','4º ano','5º ano'],
-  'Ensino Fundamental Anos Finais': ['6º ano','7º ano','8º ano','9º ano'],
-  'Ensino Médio': ['1ª série','2ª série','3ª série']
-};
-
-document.querySelectorAll('[data-segment]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.segment = btn.dataset.segment;
-
-    if(state.segment === 'Educação Infantil'){
-      state.series = 'Educação Infantil';
-      document.getElementById('selectedSeries').value = state.series;
-      document.getElementById('studentPhoneField').classList.add('hidden');
-      show('student');
-      return;
-    }
-
-    const wrap = document.getElementById('seriesOptions');
-    wrap.innerHTML = '';
-    seriesMap[state.segment].forEach(series => {
-      const b = document.createElement('button');
-      b.className = 'choice';
-      b.textContent = series;
-      b.addEventListener('click', () => {
-        state.series = series;
-        document.getElementById('selectedSeries').value = series;
-        document.getElementById('studentPhoneField')
-          .classList.toggle('hidden', state.segment !== 'Ensino Médio');
-        show('student');
-      });
-      wrap.appendChild(b);
-    });
-    show('series');
-  });
+document.querySelectorAll('[data-segment]').forEach(btn=>btn.onclick=()=>{
+ state.segment=btn.dataset.segment;
+ if(state.segment==='Educação Infantil'){
+   state.series='Educação Infantil';$('selectedSeries').value=state.series;$('studentPhoneField').classList.add('hidden');show('student');return;
+ }
+ const wrap=$('seriesOptions');wrap.innerHTML='';
+ seriesMap[state.segment].forEach(series=>{
+   const b=document.createElement('button');b.className='choice';b.textContent=series;
+   b.onclick=()=>{state.series=series;$('selectedSeries').value=series;$('studentPhoneField').classList.toggle('hidden',state.segment!=='Ensino Médio');show('student');};
+   wrap.appendChild(b);
+ });
+ show('series');
 });
 
 function cpfValido(cpf){
-  cpf = (cpf || '').replace(/\D/g,'');
-  if(cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-  let sum = 0;
-  for(let i=0;i<9;i++) sum += Number(cpf[i])*(10-i);
-  let d1 = (sum*10)%11; if(d1===10) d1=0;
-  if(d1 !== Number(cpf[9])) return false;
-  sum = 0;
-  for(let i=0;i<10;i++) sum += Number(cpf[i])*(11-i);
-  let d2 = (sum*10)%11; if(d2===10) d2=0;
-  return d2 === Number(cpf[10]);
+ cpf=(cpf||'').replace(/\D/g,'');if(cpf.length!==11||/^(\d)\1{10}$/.test(cpf))return false;
+ let s=0;for(let i=0;i<9;i++)s+=Number(cpf[i])*(10-i);let d1=(s*10)%11;if(d1===10)d1=0;if(d1!==Number(cpf[9]))return false;
+ s=0;for(let i=0;i<10;i++)s+=Number(cpf[i])*(11-i);let d2=(s*10)%11;if(d2===10)d2=0;return d2===Number(cpf[10]);
 }
-
 function readForm(){
-  state.studentName = document.getElementById('studentName').value.trim();
-  state.birthDate = document.getElementById('birthDate').value;
-  state.studentPhone = document.getElementById('studentPhone').value.trim();
-  state.guardianName = document.getElementById('guardianName').value.trim();
-  state.guardianRg = document.getElementById('guardianRg').value.trim();
-  state.guardianCpf = document.getElementById('guardianCpf').value.trim();
-  state.guardianWhatsapp = document.getElementById('guardianWhatsapp').value.trim();
-  state.guardianEmail = document.getElementById('guardianEmail').value.trim();
-  state.currentSchool = document.getElementById('currentSchool').value.trim();
+ state.studentName=$('studentName').value.trim();state.birthDate=$('birthDate').value;state.studentPhone=$('studentPhone').value.trim();
+ state.guardianName=$('guardianName').value.trim();state.guardianRg=$('guardianRg').value.trim();state.guardianCpf=$('guardianCpf').value.trim();
+ state.guardianWhatsapp=$('guardianWhatsapp').value.trim();state.guardianEmail=$('guardianEmail').value.trim();state.currentSchool=$('currentSchool').value.trim();
 }
-
 function validateBase(){
-  readForm();
-  const required = [
-    state.studentName,state.birthDate,state.guardianName,state.guardianRg,
-    state.guardianCpf,state.guardianWhatsapp,state.guardianEmail,state.currentSchool
-  ];
-  if(required.some(v => !v)) return alert('Preencha todos os campos obrigatórios.');
-  if(!cpfValido(state.guardianCpf)) return alert('Informe um CPF válido.');
-  if(!document.getElementById('privacyConsent').checked) return alert('Marque a autorização de uso dos dados.');
-  return true;
+ readForm();const req=[state.studentName,state.birthDate,state.guardianName,state.guardianRg,state.guardianCpf,state.guardianWhatsapp,state.guardianEmail,state.currentSchool];
+ if(req.some(v=>!v)){alert('Preencha todos os campos obrigatórios.');return false;}
+ if(!cpfValido(state.guardianCpf)){alert('Informe um CPF válido.');return false;}
+ if(!$('privacyConsent').checked){alert('Marque a autorização de uso dos dados.');return false;}
+ return true;
 }
 
-document.getElementById('studentNext').addEventListener('click', async () => {
-  if(!validateBase()) return;
+$('studentNext').onclick=async()=>{
+ if(!validateBase())return;
+ if(state.segment==='Educação Infantil'){show('visit');return;}
+ const {data,error}=await supabase.from('exam_dates').select('*').eq('active',true).contains('segments',[state.segment]).order('exam_date');
+ if(error){console.error(error);alert('Não foi possível carregar as datas.');return;}
+ const available=(data||[]).filter(x=>!x.series?.length||x.series.includes(state.series));
+ const wrap=$('dateOptions');wrap.innerHTML='';
+ if(!available.length){wrap.innerHTML='<div class="info-card"><p>No momento, não há datas disponíveis para esta série.</p></div>';}
+ else available.forEach(item=>{
+   const b=document.createElement('button');b.className='choice';const d=new Date(item.exam_date+'T12:00:00');
+   b.textContent=`${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})} — ${item.exam_time.slice(0,5)}`;
+   b.onclick=()=>{state.examDate=item.exam_date;state.examTime=item.exam_time;show('payment');};
+   wrap.appendChild(b);
+ });
+ show('date');
+};
 
-  if(state.segment === 'Educação Infantil'){
-    show('visit');
-    return;
-  }
-
-  const { data, error } = await supabase
-    .from('exam_dates')
-    .select('*')
-    .eq('active', true)
-    .contains('segments', [state.segment])
-    .order('exam_date');
-
-  if(error){
-    console.error(error);
-    alert('Não foi possível carregar as datas. Verifique a configuração do Supabase.');
-    return;
-  }
-
-  const available = (data || []).filter(item =>
-    !item.series?.length || item.series.includes(state.series)
-  );
-
-  const wrap = document.getElementById('dateOptions');
-  wrap.innerHTML = '';
-  if(!available.length){
-    wrap.innerHTML = '<div class="info-card"><p>No momento, não há datas disponíveis para esta série. Entre em contato com a escola.</p></div>';
-  } else {
-    available.forEach(item => {
-      const b = document.createElement('button');
-      b.className = 'choice';
-      const d = new Date(item.exam_date + 'T12:00:00');
-      const dateLabel = d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'});
-      b.textContent = `${dateLabel} — ${item.exam_time.slice(0,5)}`;
-      b.addEventListener('click', () => {
-        state.examDate = item.exam_date;
-        state.examTime = item.exam_time;
-        fillReview();
-        show('review');
-      });
-      wrap.appendChild(b);
-    });
-  }
-  show('date');
-});
+$('paymentReceipt').onchange=e=>{
+ const file=e.target.files?.[0]||null;state.receiptFile=file;
+ $('receiptFileName').textContent=file?file.name:'Nenhum arquivo selecionado';
+};
+$('copyPixBtn').onclick=async()=>{
+ try{await navigator.clipboard.writeText(PIX_KEY.replace(/\D/g,''));$('copyPixBtn').textContent='CHAVE COPIADA ✓';setTimeout(()=>$('copyPixBtn').textContent='COPIAR CHAVE',1800);}
+ catch{alert(`Chave PIX: ${PIX_KEY}`);}
+};
+$('paymentNext').onclick=()=>{
+ const file=state.receiptFile;
+ if(!file){alert('Anexe o comprovante de pagamento para continuar.');return;}
+ const allowed=['application/pdf','image/jpeg','image/png','image/webp'];
+ if(!allowed.includes(file.type)){alert('Envie o comprovante em PDF, JPG, PNG ou WEBP.');return;}
+ if(file.size>8*1024*1024){alert('O arquivo deve ter no máximo 8 MB.');return;}
+ fillReview();show('review');
+};
 
 function fillReview(){
-  const date = new Date(state.examDate + 'T12:00:00');
-  const label = date.toLocaleDateString('pt-BR');
-  document.getElementById('reviewCard').innerHTML = `
-    <div class="review-row"><span>Candidato</span><strong>${state.studentName}</strong></div>
-    <div class="review-row"><span>Ingresso</span><strong>${state.series} — ${state.segment}</strong></div>
-    <div class="review-row"><span>Prova</span><strong>${label} · ${state.examTime.slice(0,5)}</strong></div>
-    <div class="review-row"><span>Responsável</span><strong>${state.guardianName}</strong></div>
-    <div class="review-row"><span>WhatsApp</span><strong>${state.guardianWhatsapp}</strong></div>
-  `;
+ const date=new Date(state.examDate+'T12:00:00');
+ $('reviewCard').innerHTML=`
+ <div class="review-row"><span>Candidato</span><strong>${state.studentName}</strong></div>
+ <div class="review-row"><span>Ingresso</span><strong>${state.series} — ${state.segment}</strong></div>
+ <div class="review-row"><span>Prova</span><strong>${date.toLocaleDateString('pt-BR')} · ${state.examTime.slice(0,5)}</strong></div>
+ <div class="review-row"><span>Responsável</span><strong>${state.guardianName}</strong></div>
+ <div class="review-row"><span>WhatsApp</span><strong>${state.guardianWhatsapp}</strong></div>
+ <div class="review-row"><span>Pagamento</span><strong>R$ 30,00 · comprovante anexado</strong></div>`;
 }
 
-async function saveApplication(type){
-  const payload = {
-    application_type: type,
-    segment: state.segment,
-    series: state.series,
-    student_name: state.studentName,
-    birth_date: state.birthDate,
-    student_phone: state.segment === 'Ensino Médio' ? state.studentPhone : null,
-    guardian_name: state.guardianName,
-    guardian_rg: state.guardianRg,
-    guardian_cpf: state.guardianCpf.replace(/\D/g,''),
-    guardian_whatsapp: state.guardianWhatsapp,
-    guardian_email: state.guardianEmail,
-    current_school: state.currentSchool,
-    exam_date: type === 'exam' ? state.examDate : null,
-    exam_time: type === 'exam' ? state.examTime : null,
-    status: type === 'visit' ? 'Visita a agendar' : 'Inscrição confirmada'
-  };
+async function saveExamApplication(){
+ const id=crypto.randomUUID();
+ const file=state.receiptFile;
+ const ext=(file.name.split('.').pop()||'bin').toLowerCase();
+ const receiptPath=`${id}/${crypto.randomUUID()}.${ext}`;
 
-  const { error } = await supabase.from('applications').insert(payload);
-  if(error){
-    console.error(error);
-    alert('Não foi possível concluir a inscrição. Tente novamente.');
-    return false;
-  }
-  return true;
+ const upload=await supabase.storage.from('payment-receipts').upload(receiptPath,file,{upsert:false,contentType:file.type});
+ if(upload.error){console.error(upload.error);alert('Não foi possível enviar o comprovante. Tente novamente.');return false;}
+
+ const payload={
+   id,application_type:'exam',segment:state.segment,series:state.series,student_name:state.studentName,birth_date:state.birthDate,
+   student_phone:state.segment==='Ensino Médio'?state.studentPhone:null,guardian_name:state.guardianName,guardian_rg:state.guardianRg,
+   guardian_cpf:state.guardianCpf.replace(/\D/g,''),guardian_whatsapp:state.guardianWhatsapp,guardian_email:state.guardianEmail,
+   current_school:state.currentSchool,exam_date:state.examDate,exam_time:state.examTime,status:'Inscrição confirmada',source:'Link',
+   payment_amount:30,payment_method:'PIX',payment_status:'Comprovante enviado',receipt_path:receiptPath,receipt_uploaded_at:new Date().toISOString()
+ };
+ const {error}=await supabase.from('applications').insert(payload);
+ if(error){console.error(error);alert('O comprovante foi enviado, mas não foi possível concluir a inscrição. Entre em contato com a escola.');return false;}
+ return true;
 }
 
-document.getElementById('confirmApplication').addEventListener('click', async () => {
-  if(await saveApplication('exam')){
-    const date = new Date(state.examDate + 'T12:00:00');
-    document.getElementById('successText').innerHTML =
-      `A inscrição de <b>${state.studentName}</b> para a <b>Seleção 2027 — ${state.series}</b> foi confirmada.`;
-    document.getElementById('successDate').textContent =
-      `${date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})} | ${state.examTime.slice(0,5)}`;
-    show('success');
-  }
-});
+$('confirmApplication').onclick=async()=>{
+ $('confirmApplication').disabled=true;$('confirmApplication').textContent='ENVIANDO...';
+ const ok=await saveExamApplication();
+ $('confirmApplication').disabled=false;$('confirmApplication').textContent='CONFIRMAR INSCRIÇÃO';
+ if(!ok)return;
+ const date=new Date(state.examDate+'T12:00:00');
+ $('successText').innerHTML=`A inscrição de <b>${state.studentName}</b> para a <b>Seleção 2027 — ${state.series}</b> foi confirmada.`;
+ $('successDate').textContent=`${date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})} | ${state.examTime.slice(0,5)}`;
+ show('success');
+};
 
-document.getElementById('visitConfirm').addEventListener('click', async () => {
-  if(await saveApplication('visit')) show('visitSuccess');
-});
+$('visitConfirm').onclick=async()=>{
+ readForm();
+ const payload={application_type:'visit',segment:'Educação Infantil',series:'Educação Infantil',student_name:state.studentName,birth_date:state.birthDate,
+ guardian_name:state.guardianName,guardian_rg:state.guardianRg,guardian_cpf:state.guardianCpf.replace(/\D/g,''),guardian_whatsapp:state.guardianWhatsapp,
+ guardian_email:state.guardianEmail,current_school:state.currentSchool,status:'Visita a agendar',source:'Link',payment_status:'Isento'};
+ const {error}=await supabase.from('applications').insert(payload);
+ if(error){console.error(error);alert('Não foi possível registrar o interesse.');return;}
+ show('visitSuccess');
+};
