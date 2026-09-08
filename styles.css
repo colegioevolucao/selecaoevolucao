@@ -51,3 +51,93 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:12px 10px
 .program-download-copy{display:grid;gap:3px}.program-download-copy span{color:var(--orange);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
 .program-download-copy strong{color:var(--blue);font-size:16px}
 @media(max-width:760px){.program-download-box{grid-template-columns:auto 1fr}.program-download-box .btn{grid-column:1/-1;text-align:center}}
+
+
+/* V5 — confirmação reorganizada + atendimento WhatsApp */
+.success-page{max-width:960px;padding-top:36px}
+.success-hero{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+.success-hero h2{margin:0 0 4px;font-size:clamp(42px,6vw,68px)}
+.success-hero p{margin:0;color:var(--blue);font-weight:600;font-size:18px}
+
+.success-summary-card{
+  max-width:900px;
+  display:grid;
+  grid-template-columns:1.15fr 1px 1fr;
+  gap:26px;
+  align-items:center;
+  padding:24px 26px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(20,45,90,.06)
+}
+.summary-student,.summary-date>div{display:grid;gap:4px}
+.summary-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--orange)}
+.summary-student strong{font-size:24px;color:var(--blue)}
+.summary-student>span:last-child{color:var(--muted);font-size:14px}
+.summary-divider{height:70px;background:var(--line)}
+.summary-date{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.summary-date strong{font-size:18px;color:var(--blue)}
+
+.payment-confirmation-card{
+  margin-top:18px;
+  max-width:900px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  padding:18px 20px;
+  border-radius:18px;
+  border:1px solid #d8eadf;
+  background:#f6fbf8
+}
+.payment-confirmation-icon{
+  width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#1f9d62;color:#fff;font-weight:800;font-size:20px;flex:0 0 auto
+}
+.payment-confirmation-card>div:last-child{display:grid;gap:2px}
+.payment-confirmation-card span{font-size:11px;letter-spacing:.08em;font-weight:800;color:#178255}
+.payment-confirmation-card strong{color:var(--ink);font-size:14px}
+
+.whatsapp-support-card{
+  margin-top:18px;
+  max-width:900px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:16px;
+  align-items:center;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(20,45,90,.04)
+}
+.whatsapp-support-icon{
+  width:50px;height:50px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#25D366;color:#fff;
+  font-size:23px;font-weight:700
+}
+.whatsapp-support-copy{display:grid;gap:3px}
+.whatsapp-support-copy span{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.08em}
+.whatsapp-support-copy strong{font-size:14px;color:var(--ink)}
+.whatsapp-btn{background:#25D366;color:#fff;text-decoration:none;white-space:nowrap}
+.whatsapp-btn:hover{background:#1fb85a}
+
+.success-footer-message{
+  max-width:900px;
+  margin:24px 0 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px
+}
+
+@media(max-width:760px){
+  .success-page{padding-top:24px}
+  .success-hero{align-items:flex-start}
+  .success-summary-card{grid-template-columns:1fr;gap:18px}
+  .summary-divider{width:100%;height:1px}
+  .summary-date{grid-template-columns:1fr 1fr}
+  .whatsapp-support-card{grid-template-columns:auto 1fr}
+  .whatsapp-support-card .whatsapp-btn{grid-column:1/-1;text-align:center;white-space:normal}
+}

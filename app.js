@@ -137,8 +137,10 @@ $('confirmApplication').onclick=async()=>{
  $('confirmApplication').disabled=false;$('confirmApplication').textContent='CONFIRMAR INSCRIÇÃO';
  if(!ok)return;
  const date=new Date(state.examDate+'T12:00:00');
- $('successText').innerHTML=`A inscrição de <b>${state.studentName}</b> para a <b>Seleção 2027 — ${state.series}</b> foi confirmada.`;
- $('successDate').textContent=`${date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})} | ${state.examTime.slice(0,5)}`;
+ $('successStudentName').textContent=state.studentName;
+ $('successSeriesLine').textContent=`Seleção 2027 • ${state.series}`;
+ $('successExamDate').textContent=date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'});
+ $('successExamTime').textContent=state.examTime.slice(0,5);
  const programFile=PROGRAM_FILES[state.series];
  if(programFile){
    $('programDownloadBtn').href=programFile;
