@@ -5,6 +5,20 @@ const SUPABASE_ANON_KEY='sb_publishable_Fcm35rSx0XDCdjtvetyRLg_iymciHct';
 const supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
 const PIX_KEY='83 99196-8537';
+const PROGRAM_FILES={
+ '1º ano':'./programas/programa-1-ano.pdf',
+ '2º ano':'./programas/programa-2-ano.pdf',
+ '3º ano':'./programas/programa-3-ano.pdf',
+ '4º ano':'./programas/programa-4-ano.pdf',
+ '5º ano':'./programas/programa-5-ano.pdf',
+ '6º ano':'./programas/programa-6-ano.pdf',
+ '7º ano':'./programas/programa-7-ano.pdf',
+ '8º ano':'./programas/programa-8-ano.pdf',
+ '9º ano':'./programas/programa-9-ano.pdf',
+ '1ª série':'./programas/programa-1-serie.pdf',
+ '2ª série':'./programas/programa-2-serie.pdf',
+ '3ª série':'./programas/programa-3-serie.pdf'
+};
 const $=id=>document.getElementById(id);
 const state={segment:'',series:'',studentName:'',birthDate:'',studentPhone:'',guardianName:'',guardianRg:'',guardianCpf:'',guardianWhatsapp:'',guardianEmail:'',currentSchool:'',examDate:'',examTime:'',receiptFile:null};
 
@@ -125,6 +139,14 @@ $('confirmApplication').onclick=async()=>{
  const date=new Date(state.examDate+'T12:00:00');
  $('successText').innerHTML=`A inscrição de <b>${state.studentName}</b> para a <b>Seleção 2027 — ${state.series}</b> foi confirmada.`;
  $('successDate').textContent=`${date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})} | ${state.examTime.slice(0,5)}`;
+ const programFile=PROGRAM_FILES[state.series];
+ if(programFile){
+   $('programDownloadBtn').href=programFile;
+   $('programDownloadBtn').setAttribute('download',`Programa da Prova - ${state.series} - Selecao 2027.pdf`);
+   $('programDownloadBox').classList.remove('hidden');
+ }else{
+   $('programDownloadBox').classList.add('hidden');
+ }
  show('success');
 };
 
