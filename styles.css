@@ -1,143 +1,18 @@
-:root{
-  --blue:#143f94;--blue-2:#2453b4;--orange:#ff5a00;--orange-2:#ff7a00;
-  --ink:#12213b;--muted:#667085;--line:#e5ebf3;--soft:#f7f9fc;--white:#fff;
-}
-*{box-sizing:border-box}body{margin:0;font-family:"Poppins",sans-serif;color:var(--ink);background:#fff;min-height:100vh;overflow-x:hidden}
-.site-header,.container,.footer{width:min(1180px,calc(100% - 40px));margin:0 auto}.site-header{padding:28px 0 10px}.logo{width:190px;max-width:45vw}
-.screen{display:none;min-height:72vh;padding:54px 0 72px;position:relative;z-index:2}.screen.active{display:block}.cover{max-width:780px;padding-top:90px}
-.eyebrow,.step{font-weight:800;letter-spacing:.22em}.eyebrow{color:var(--blue);font-size:18px}.step{color:var(--orange);font-size:14px}
-h1{font-size:clamp(48px,8vw,92px);line-height:.95;letter-spacing:-.055em;margin:18px 0 28px;color:var(--blue)}h1 span{color:var(--orange)}
-h2{font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.04em;color:var(--blue);max-width:880px;margin:8px 0 38px}
-h3{color:var(--blue);margin-top:38px}.lead{font-size:18px;max-width:650px;color:var(--muted);margin-bottom:34px}
-.btn{border:0;border-radius:999px;padding:16px 26px;font:600 14px "Poppins";cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-1px)}
-.primary{background:linear-gradient(90deg,var(--orange),var(--orange-2));color:#fff}.ghost{background:#fff;border:1px solid var(--line);color:var(--blue)}
-.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:920px}.choice{min-height:96px;text-align:left;padding:23px 25px;border:1px solid var(--line);border-radius:20px;background:#fff;color:var(--blue);font:600 16px "Poppins";cursor:pointer;box-shadow:0 8px 30px rgba(20,45,90,.05)}
-.choice:hover{border-color:var(--orange);box-shadow:0 10px 34px rgba(255,90,0,.12)}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:930px}label{font-size:14px;font-weight:600;color:var(--blue)}
-input,select{width:100%;margin-top:8px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:15px 16px;font:400 15px "Poppins";outline:none}
-input:focus,select:focus{border-color:var(--blue-2);box-shadow:0 0 0 3px rgba(36,79,174,.08)}.hidden{display:none!important}
-.consent{max-width:930px;display:flex;gap:12px;align-items:flex-start;margin-top:22px;color:var(--muted);font-weight:400}.consent input{width:auto;margin-top:4px}
-.actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.info-card,.review-card{max-width:900px;border:1px solid var(--line);border-radius:22px;padding:28px;background:#fff;box-shadow:0 10px 34px rgba(20,45,90,.06)}
-.review-row{display:flex;justify-content:space-between;gap:24px;padding:15px 0;border-bottom:1px solid var(--line)}.review-row:last-child{border-bottom:0}.review-row span:first-child{color:var(--muted)}.review-row strong{color:var(--blue);text-align:right}
-.success{max-width:760px}.success-mark{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--orange);color:#fff;font-size:28px;font-weight:800}
-.payment-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start;max-width:1050px}.payment-visual img{width:100%;display:block;border-radius:22px;box-shadow:0 14px 40px rgba(20,45,90,.12)}
-.payment-upload h3{margin-top:0}.upload-box{display:flex;min-height:170px;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2px dashed #cfd9e8;border-radius:18px;background:#fafcff;cursor:pointer;padding:24px}.upload-icon{font-size:34px;color:var(--orange);line-height:1}.upload-box small{margin-top:6px;color:var(--muted);font-weight:400}.file-name{margin-top:12px;color:var(--muted);font-size:13px}
-.pix-shortcut{margin-top:20px;padding:16px;border-radius:16px;background:#f6f8fc;display:grid;gap:5px}.pix-shortcut span{font-size:12px;color:var(--muted)}.pix-shortcut strong{color:var(--blue);font-size:20px}.pix-shortcut .btn{margin-top:8px;width:max-content}
-.decor{position:fixed;z-index:0;border-radius:36px;transform:rotate(45deg)}.decor-orange{width:280px;height:280px;background:linear-gradient(135deg,var(--orange),var(--orange-2))}.decor-blue{width:260px;height:260px;background:linear-gradient(135deg,var(--blue),var(--blue-2))}
-.decor-top{right:-80px;top:-110px}.decor-right{right:-120px;bottom:-80px}.footer{padding:18px 0 34px;color:var(--muted);font-size:13px}
-
-/* Administração */
-.dashboard-body{background:var(--soft)}.admin-shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.sidebar{background:#fff;border-right:1px solid var(--line);padding:28px 22px}.sidebar .logo{width:160px;margin-bottom:34px}
-.nav{display:grid;gap:8px}.nav button{border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:12px;font:500 14px "Poppins";color:var(--muted);cursor:pointer}.nav button.active,.nav button:hover{background:#f3f6fb;color:var(--blue)}
-.admin-main{padding:38px}.admin-top h1{font-size:42px;margin:0;color:var(--blue)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:28px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}.stat strong{font-size:32px;color:var(--blue);display:block}
-.cards{display:grid;grid-template-columns:1.4fr .6fr;gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}.panel h3{margin-top:0}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}th{color:var(--muted);font-weight:600}.status,.source-badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:600}.status{background:#eef4ff;color:var(--blue)}.source-badge{background:#f2f4f7;color:#475467}.source-badge.crm{background:#fff1e8;color:#c94b00}
-.login-wrap{min-height:100vh;display:grid;place-items:center;background:var(--soft);padding:24px}.login-card{width:min(440px,100%);background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 20px 50px rgba(20,45,90,.08)}.login-card .logo{display:block;margin:0 auto 28px;width:180px}.login-card h2{font-size:34px;margin:0 0 10px}.login-card p{color:var(--muted)}.login-card label{display:block;margin-top:16px}.error{color:#b42318;font-size:13px;margin-top:12px}
-.section-header{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.toolbar-actions{display:flex;gap:10px;flex-wrap:wrap}.muted{color:var(--muted);margin:0}
-.filters{display:grid;grid-template-columns:2fr 1fr 1.3fr auto;gap:10px;margin-top:22px}.filter-summary{margin-top:12px;color:var(--muted);font-size:13px}.icon-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 9px;cursor:pointer}.icon-btn.danger{color:#b42318}
-.receipt-btn{border:0;background:#eef4ff;color:var(--blue);border-radius:9px;padding:7px 9px;font:600 11px "Poppins";cursor:pointer}
-.payment-pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:11px;font-weight:600}.payment-pill.ok{background:#ecfdf3;color:#027a48}
-.modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:22px}.modal.hidden{display:none}.modal-backdrop{position:absolute;inset:0;background:rgba(10,25,50,.45);backdrop-filter:blur(3px)}.modal-card{position:relative;width:min(980px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:24px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.22)}
-.modal-header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:18px}.modal-header h3{margin:4px 0 0;font-size:28px}.modal-close{border:0;background:#f3f5f8;border-radius:50%;width:38px;height:38px;font-size:25px;cursor:pointer}
-@media(max-width:900px){.choice-grid,.form-grid,.stats,.cards,.payment-layout,.filters{grid-template-columns:1fr}.admin-shell{grid-template-columns:1fr}.sidebar{display:none}.admin-main{padding:22px}.decor{opacity:.15}}
-
-/* Programa da prova - tela de confirmação */
-.program-download-box{
-  margin-top:28px;max-width:900px;padding:20px;border:1px solid var(--line);border-radius:20px;
-  background:#fff;box-shadow:0 10px 30px rgba(20,45,90,.06);display:grid;
-  grid-template-columns:auto 1fr auto;gap:16px;align-items:center
-}
-.program-download-icon{width:52px;height:52px;border-radius:15px;background:#eef4ff;display:grid;place-items:center;font-size:24px}
-.program-download-copy{display:grid;gap:3px}.program-download-copy span{color:var(--orange);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
-.program-download-copy strong{color:var(--blue);font-size:16px}
-@media(max-width:760px){.program-download-box{grid-template-columns:auto 1fr}.program-download-box .btn{grid-column:1/-1;text-align:center}}
-
-
-/* V5 — confirmação reorganizada + atendimento WhatsApp */
-.success-page{max-width:960px;padding-top:36px}
-.success-hero{display:flex;align-items:center;gap:18px;margin-bottom:26px}
-.success-hero h2{margin:0 0 4px;font-size:clamp(42px,6vw,68px)}
-.success-hero p{margin:0;color:var(--blue);font-weight:600;font-size:18px}
-
-.success-summary-card{
-  max-width:900px;
-  display:grid;
-  grid-template-columns:1.15fr 1px 1fr;
-  gap:26px;
-  align-items:center;
-  padding:24px 26px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:#fff;
-  box-shadow:0 10px 30px rgba(20,45,90,.06)
-}
-.summary-student,.summary-date>div{display:grid;gap:4px}
-.summary-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--orange)}
-.summary-student strong{font-size:24px;color:var(--blue)}
-.summary-student>span:last-child{color:var(--muted);font-size:14px}
-.summary-divider{height:70px;background:var(--line)}
-.summary-date{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.summary-date strong{font-size:18px;color:var(--blue)}
-
-.payment-confirmation-card{
-  margin-top:18px;
-  max-width:900px;
-  display:flex;
-  gap:14px;
-  align-items:center;
-  padding:18px 20px;
-  border-radius:18px;
-  border:1px solid #d8eadf;
-  background:#f6fbf8
-}
-.payment-confirmation-icon{
-  width:42px;height:42px;border-radius:50%;
-  display:grid;place-items:center;
-  background:#1f9d62;color:#fff;font-weight:800;font-size:20px;flex:0 0 auto
-}
-.payment-confirmation-card>div:last-child{display:grid;gap:2px}
-.payment-confirmation-card span{font-size:11px;letter-spacing:.08em;font-weight:800;color:#178255}
-.payment-confirmation-card strong{color:var(--ink);font-size:14px}
-
-.whatsapp-support-card{
-  margin-top:18px;
-  max-width:900px;
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  gap:16px;
-  align-items:center;
-  padding:20px;
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:#fff;
-  box-shadow:0 8px 24px rgba(20,45,90,.04)
-}
-.whatsapp-support-icon{
-  width:50px;height:50px;border-radius:50%;
-  display:grid;place-items:center;
-  background:#25D366;color:#fff;
-  font-size:23px;font-weight:700
-}
-.whatsapp-support-copy{display:grid;gap:3px}
-.whatsapp-support-copy span{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.08em}
-.whatsapp-support-copy strong{font-size:14px;color:var(--ink)}
-.whatsapp-btn{background:#25D366;color:#fff;text-decoration:none;white-space:nowrap}
-.whatsapp-btn:hover{background:#1fb85a}
-
-.success-footer-message{
-  max-width:900px;
-  margin:24px 0 0;
-  text-align:center;
-  color:var(--muted);
-  font-size:14px
-}
-
-@media(max-width:760px){
-  .success-page{padding-top:24px}
-  .success-hero{align-items:flex-start}
-  .success-summary-card{grid-template-columns:1fr;gap:18px}
-  .summary-divider{width:100%;height:1px}
-  .summary-date{grid-template-columns:1fr 1fr}
-  .whatsapp-support-card{grid-template-columns:auto 1fr}
-  .whatsapp-support-card .whatsapp-btn{grid-column:1/-1;text-align:center;white-space:normal}
-}
+:root{--blue:#143f94;--orange:#ff5a00;--ink:#12213b;--muted:#667085;--line:#e5ebf3;--soft:#f7f9fc}
+*{box-sizing:border-box}body{margin:0;font-family:"Poppins",sans-serif;color:var(--ink);background:#fff}
+.site-header,.container{width:min(1180px,calc(100% - 40px));margin:0 auto}.site-header{padding:24px 0}.logo{width:170px}
+.screen{display:none;min-height:72vh;padding:46px 0 68px}.screen.active{display:block}
+.eyebrow,.step{font-weight:800;letter-spacing:.18em}.eyebrow{color:var(--blue)}.step{color:var(--orange);font-size:13px}
+h1{font-size:72px;line-height:.95;color:var(--blue);margin:18px 0 28px}h1 span{color:var(--orange)}h2{font-size:54px;line-height:1.02;color:var(--blue);margin:8px 0 30px}h3{color:var(--blue)}
+.lead,.date-intro{color:var(--muted)}.btn{border:0;border-radius:999px;padding:16px 26px;font:600 14px "Poppins";cursor:pointer;text-decoration:none}.primary{background:var(--orange);color:#fff}.ghost{background:#fff;border:1px solid var(--line);color:var(--blue)}
+.choice-grid,.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:930px}.choice{padding:22px;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--blue);font-weight:600}
+label{font-size:14px;font-weight:600;color:var(--blue)}input{width:100%;margin-top:8px;padding:14px;border:1px solid var(--line);border-radius:14px}.hidden{display:none!important}.actions{display:flex;gap:12px;margin-top:28px}
+.info-card,.review-card{max-width:900px;padding:26px;border:1px solid var(--line);border-radius:20px;background:#fff}.review-row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
+.payment-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}.payment-visual img{width:100%;border-radius:20px}.upload-box{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:170px;border:2px dashed #cfd9e8;border-radius:18px}
+.date-screen{max-width:1120px}.date-screen h2{margin-bottom:12px}.date-intro{margin:0 0 34px;font-size:16px}.date-months{display:grid;gap:28px}.date-month-group{display:grid;gap:14px}.date-month-title{margin:0;color:var(--orange);font-size:13px;letter-spacing:.16em}
+.date-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.date-card{min-height:170px;padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff;display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 8px 24px rgba(20,45,90,.05);cursor:pointer}
+.date-card.selected{border:2px solid var(--orange);background:#fffaf6}.date-card-month{color:var(--orange);font-size:11px;font-weight:800;letter-spacing:.12em}.date-card-day{font-size:42px;line-height:1;color:var(--blue)}.date-card-weekday{font-size:13px;color:var(--muted);text-transform:capitalize}.date-card-time{margin-top:14px;font-weight:700}.date-card-select{margin-top:auto;width:100%;display:flex;justify-content:space-between;color:var(--blue);font-size:12px;font-weight:700}.date-card-select b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:1px solid #cfd9e8}.date-card.selected .date-card-select b{background:var(--orange);border-color:var(--orange);color:#fff}
+.date-actions{display:flex;justify-content:space-between;margin-top:30px}.date-actions .primary:disabled{opacity:.4;cursor:not-allowed}
+.success-hero{display:flex;gap:18px;align-items:center}.success-mark{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--orange);color:#fff;font-size:28px}.success-summary-card,.program-download-box,.payment-confirmation-card,.whatsapp-support-card{max-width:900px;margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff}
+.success-summary-card{display:grid;grid-template-columns:1.15fr 1px 1fr;gap:26px}.summary-divider{background:var(--line)}.summary-date{display:grid;grid-template-columns:1fr 1fr;gap:20px}.summary-label{font-size:11px;color:var(--orange);font-weight:800}.program-download-box,.whatsapp-support-card{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}.whatsapp-btn{background:#25D366;color:#fff}.payment-confirmation-card{display:flex;gap:14px;align-items:center}
+@media(max-width:980px){.date-card-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.choice-grid,.form-grid,.payment-layout,.date-card-grid{grid-template-columns:1fr}.date-actions{flex-direction:column-reverse;gap:12px}.success-summary-card{grid-template-columns:1fr}.program-download-box,.whatsapp-support-card{grid-template-columns:1fr}}
