@@ -10,13 +10,19 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <header class="site-header"><img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo"></header>
+  <div class="decor decor-orange decor-top"></div>
+  <div class="decor decor-blue decor-right"></div>
+
+  <header class="site-header">
+    <img src="./assets/logo-evolucao.png" alt="Colégio Evolução" class="logo">
+  </header>
+
   <main class="container">
     <section id="cover" class="screen active cover">
       <div class="eyebrow">SELEÇÃO 2027</div>
       <h1>Garanta sua vaga <span>entre os melhores!</span></h1>
       <p class="lead">Faça sua inscrição para o processo de Seleção 2027 do Colégio Evolução.</p>
-      <button class="btn primary" data-next="segment">FAZER MINHA INSCRIÇÃO →</button>
+      <button class="btn primary" data-next="segment">FAZER MINHA INSCRIÇÃO <span>→</span></button>
     </section>
 
     <section id="segment" class="screen">
@@ -40,22 +46,49 @@
     <section id="student" class="screen">
       <div class="step">03</div>
       <h2>Sobre o futuro aluno</h2>
+
       <div class="form-grid">
-        <label>Nome completo<input id="studentName" type="text"></label>
-        <label>Data de nascimento<input id="birthDate" type="date"></label>
-        <label>Série pretendida<input id="selectedSeries" type="text" readonly></label>
-        <label id="studentPhoneField" class="hidden">Telefone do aluno<input id="studentPhone" type="tel"></label>
+        <label>Nome completo
+          <input id="studentName" type="text" placeholder="Nome completo do candidato">
+        </label>
+        <label>Data de nascimento
+          <input id="birthDate" type="date">
+        </label>
+        <label>Série pretendida
+          <input id="selectedSeries" type="text" readonly>
+        </label>
+        <label id="studentPhoneField" class="hidden">Telefone do aluno
+          <input id="studentPhone" type="tel" placeholder="(83) 99999-9999">
+        </label>
       </div>
+
       <h3>Dados do responsável</h3>
       <div class="form-grid">
-        <label>Nome completo do responsável<input id="guardianName" type="text"></label>
-        <label>RG<input id="guardianRg" type="text"></label>
-        <label>CPF<input id="guardianCpf" type="text"></label>
-        <label>WhatsApp<input id="guardianWhatsapp" type="tel"></label>
-        <label>E-mail<input id="guardianEmail" type="email"></label>
-        <label>Escola atual<input id="currentSchool" type="text"></label>
+        <label>Nome completo do responsável
+          <input id="guardianName" type="text">
+        </label>
+        <label>RG
+          <input id="guardianRg" type="text">
+        </label>
+        <label>CPF
+          <input id="guardianCpf" type="text" inputmode="numeric">
+        </label>
+        <label>WhatsApp
+          <input id="guardianWhatsapp" type="tel">
+        </label>
+        <label>E-mail
+          <input id="guardianEmail" type="email">
+        </label>
+        <label>Escola em que o aluno estuda atualmente
+          <input id="currentSchool" type="text">
+        </label>
       </div>
-      <label class="consent"><input id="privacyConsent" type="checkbox"><span>Autorizo o uso dos dados exclusivamente para contato, inscrição, organização da Seleção 2027 e conferência do pagamento.</span></label>
+
+      <label class="consent">
+        <input id="privacyConsent" type="checkbox">
+        <span>Autorizo o uso dos dados informados exclusivamente para fins de contato, inscrição, organização da Seleção 2027 e conferência do pagamento.</span>
+      </label>
+
       <div class="actions">
         <button class="btn ghost" data-back="series">← Voltar</button>
         <button id="studentNext" class="btn primary">CONTINUAR →</button>
@@ -65,29 +98,63 @@
     <section id="date" class="screen date-screen">
       <div class="step">04 — DATA DA PROVA</div>
       <h2>Escolha a melhor data para sua prova</h2>
-      <p class="date-intro">Selecione uma das datas disponíveis abaixo. <strong>Todas as provas acontecem às 14h30.</strong></p>
+      <p class="date-intro">
+        Selecione uma das datas disponíveis abaixo.
+        <strong>Todas as provas acontecem às 14h30.</strong>
+      </p>
+
       <div id="dateOptions" class="date-months"></div>
+
       <div class="date-actions">
         <button class="btn ghost" data-back="student">← Voltar</button>
         <button id="dateContinueBtn" class="btn primary" disabled>CONTINUAR →</button>
       </div>
     </section>
 
+    <section id="visit" class="screen">
+      <div class="step">04</div>
+      <h2>Agendar visita</h2>
+      <div class="info-card">
+        <h3>Vamos agendar sua visita 💙</h3>
+        <p>Recebemos seus dados. Nossa equipe entrará em contato para combinar o melhor dia e horário para sua visita ao Colégio Evolução.</p>
+        <p>Será um prazer receber sua família e apresentar de perto a nossa proposta para a Educação Infantil.</p>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" data-back="student">← Voltar</button>
+        <button id="visitConfirm" class="btn primary">CONFIRMAR INTERESSE →</button>
+      </div>
+    </section>
+
     <section id="payment" class="screen">
       <div class="step">05</div>
       <h2>Pagamento da inscrição</h2>
+
       <div class="payment-layout">
-        <div class="payment-visual"><img src="./assets/pagamento-selecao-2027.png" alt="Dados para pagamento"></div>
+        <div class="payment-visual">
+          <img src="./assets/pagamento-selecao-2027.png" alt="Dados para pagamento da Seleção 2027">
+        </div>
+
         <div class="info-card payment-upload">
           <h3>Envie o comprovante</h3>
           <p>Após realizar o PIX de <strong>R$ 30,00</strong>, anexe o comprovante para concluir sua inscrição.</p>
+
           <label class="upload-box" for="paymentReceipt">
             <input id="paymentReceipt" type="file" accept=".pdf,image/jpeg,image/png,image/webp" hidden>
-            <span class="upload-icon">↑</span><strong>Selecionar comprovante</strong><small>PDF, JPG, PNG ou WEBP · máximo 8 MB</small>
+            <span class="upload-icon">↑</span>
+            <strong>Selecionar comprovante</strong>
+            <small>PDF, JPG, PNG ou WEBP · máximo 8 MB</small>
           </label>
+
           <div id="receiptFileName" class="file-name">Nenhum arquivo selecionado</div>
+
+          <div class="pix-shortcut">
+            <span>Chave PIX</span>
+            <strong>83 99196-8537</strong>
+            <button id="copyPixBtn" class="btn ghost" type="button">COPIAR CHAVE</button>
+          </div>
         </div>
       </div>
+
       <div class="actions">
         <button class="btn ghost" data-back="date">← Voltar</button>
         <button id="paymentNext" class="btn primary">CONTINUAR →</button>
@@ -105,31 +172,81 @@
     </section>
 
     <section id="success" class="screen success success-page">
-      <div class="success-hero"><div class="success-mark">✓</div><div><h2>Inscrição realizada!</h2><p>Que bom ter você por aqui.</p></div></div>
+      <div class="success-hero">
+        <div class="success-mark">✓</div>
+        <div>
+          <h2>Inscrição realizada!</h2>
+          <p>Que bom ter você por aqui.</p>
+        </div>
+      </div>
+
       <div class="success-summary-card">
-        <div class="summary-student"><span class="summary-label">CANDIDATO</span><strong id="successStudentName">—</strong><span id="successSeriesLine">Seleção 2027</span></div>
+        <div class="summary-student">
+          <span class="summary-label">CANDIDATO</span>
+          <strong id="successStudentName">—</strong>
+          <span id="successSeriesLine">Seleção 2027</span>
+        </div>
+
         <div class="summary-divider"></div>
+
         <div class="summary-date">
-          <div><span class="summary-label">DATA DA PROVA</span><strong id="successExamDate">—</strong></div>
-          <div><span class="summary-label">HORÁRIO</span><strong id="successExamTime">—</strong></div>
+          <div>
+            <span class="summary-label">DATA DA PROVA</span>
+            <strong id="successExamDate">—</strong>
+          </div>
+          <div>
+            <span class="summary-label">HORÁRIO</span>
+            <strong id="successExamTime">—</strong>
+          </div>
         </div>
       </div>
 
       <div id="programDownloadBox" class="program-download-box hidden">
         <div class="program-download-icon">📄</div>
-        <div class="program-download-copy"><span>PREPARE-SE PARA A SUA PROVA</span><strong>Acesse o conteúdo programático correspondente à sua série.</strong></div>
+        <div class="program-download-copy">
+          <span>Prepare-se para a sua prova</span>
+          <strong>Acesse o conteúdo programático correspondente à sua série.</strong>
+        </div>
         <a id="programDownloadBtn" class="btn primary" href="#" download>BAIXAR PROGRAMA DA PROVA</a>
       </div>
 
-      <div class="payment-confirmation-card"><div class="payment-confirmation-icon">✓</div><div><span>COMPROVANTE ENVIADO</span><strong>Seu pagamento será conferido pela nossa equipe.</strong></div></div>
+      <div class="payment-confirmation-card">
+        <div class="payment-confirmation-icon">✓</div>
+        <div>
+          <span>COMPROVANTE ENVIADO</span>
+          <strong>Seu pagamento será conferido pela nossa equipe.</strong>
+        </div>
+      </div>
 
       <div class="whatsapp-support-card">
         <div class="whatsapp-support-icon">☎</div>
-        <div class="whatsapp-support-copy"><span>AINDA FICOU COM ALGUMA DÚVIDA?</span><strong>Nosso time de atendimento está pronto para ajudar você.</strong></div>
-        <a class="btn whatsapp-btn" href="https://wa.me/558391721996?text=Ol%C3%A1%21%20Fiz%20a%20inscri%C3%A7%C3%A3o%20para%20a%20Sele%C3%A7%C3%A3o%202027%20do%20Col%C3%A9gio%20Evolu%C3%A7%C3%A3o%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida." target="_blank" rel="noopener noreferrer">FALAR COM NOSSO TIME PELO WHATSAPP</a>
+        <div class="whatsapp-support-copy">
+          <span>AINDA FICOU COM ALGUMA DÚVIDA?</span>
+          <strong>Nosso time de atendimento está pronto para ajudar você.</strong>
+        </div>
+        <a
+          class="btn whatsapp-btn"
+          href="https://wa.me/558391721996?text=Ol%C3%A1%21%20Fiz%20a%20inscri%C3%A7%C3%A3o%20para%20a%20Sele%C3%A7%C3%A3o%202027%20do%20Col%C3%A9gio%20Evolu%C3%A7%C3%A3o%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida."
+          target="_blank"
+          rel="noopener noreferrer"
+        >FALAR COM NOSSO TIME PELO WHATSAPP</a>
       </div>
+
+      <p class="success-footer-message">
+        Este é o primeiro passo para fazer parte do <b>Evolução</b>. 💙
+      </p>
+    </section>
+
+    <section id="visitSuccess" class="screen success">
+      <div class="success-mark">✓</div>
+      <h2>Interesse registrado!</h2>
+      <h3>Que bom ter você por aqui!</h3>
+      <p>Nossa equipe entrará em contato para combinar o melhor dia e horário para sua visita ao Colégio Evolução.</p>
+      <p class="final-message">Será um prazer receber sua família. 💙</p>
     </section>
   </main>
+
+  <footer class="footer">Colégio Evolução</footer>
   <script type="module" src="./app.js"></script>
 </body>
 </html>
