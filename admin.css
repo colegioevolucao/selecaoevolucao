@@ -565,3 +565,10 @@
   .education-tab{flex:0 0 auto}
   .candidate-filters{grid-template-columns:1fr}
 }
+
+/* Distribuição da próxima prova */
+.exam-breakdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px;max-width:760px}
+.exam-breakdown>div{border:1px solid #e2e8f3;border-radius:14px;padding:12px 14px;background:#f8faff;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.exam-breakdown span{font-size:13px;color:#64708a}.exam-breakdown strong{font-size:20px;color:#17449d}
+@media(max-width:760px){.exam-breakdown{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.exam-breakdown{grid-template-columns:1fr}}

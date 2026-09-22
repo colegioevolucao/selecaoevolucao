@@ -40,19 +40,39 @@ async function loadDashboard(){
  applications=a.data||[];examDates=d.data||[];populateDates();renderStats();renderCandidates();renderExams();
 }
 
+function isActiveApplication(a){
+ return a.status!=='Inscrição cancelada';
+}
+function activeApplications(){
+ return applications.filter(isActiveApplication);
+}
 function renderStats(){
  const now=new Date();
- const today=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;$('statTotal').textContent=applications.length;$('statToday').textContent=applications.filter(a=>{
+ const today=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+ const valid=activeApplications();
+ $('statTotal').textContent=valid.length;
+ $('statToday').textContent=valid.filter(a=>{
    if(!a.created_at)return false;
    const d=new Date(a.created_at);
    const local=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
    return local===today;
- }).length;$('statSeries').textContent=new Set(applications.map(a=>a.series).filter(Boolean)).size;
- const next=examDates.filter(e=>e.active&&e.exam_date>=today)[0],count=next?applications.filter(a=>a.exam_date===next.exam_date&&a.status!=='Inscrição cancelada').length:0;$('statNextExam').textContent=next?new Date(next.exam_date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}):'—';
- $('nextExamCard').innerHTML=next?`<div class="step">PRÓXIMA PROVA</div><h2 style="font-size:42px;margin:8px 0">${new Date(next.exam_date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).toUpperCase()} · ${next.exam_time.slice(0,5)}</h2><p><strong>${count} candidatos inscritos</strong></p>`:'<p>Nenhuma prova futura cadastrada.</p>';
- $('upcomingExamDates').innerHTML=examDates.filter(e=>e.active&&e.exam_date>=today).slice(1,4).map(e=>`<p><strong>${new Date(e.exam_date+'T12:00:00').toLocaleDateString('pt-BR')} · ${e.exam_time.slice(0,5)}</strong><br>${applications.filter(a=>a.exam_date===e.exam_date).length} inscritos</p>`).join('')||'<p>Sem outras datas futuras.</p>';
+ }).length;
+ $('statSeries').textContent=new Set(valid.map(a=>a.series).filter(Boolean)).size;
+ const next=examDates.filter(e=>e.active&&e.exam_date>=today)[0];
+ const nextList=next?valid.filter(a=>a.exam_date===next.exam_date):[];
+ $('statNextExam').textContent=next?new Date(next.exam_date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}):'—';
+ if(next){
+   const segments=[
+    ['Educação Infantil','Infantil'],
+    ['Ensino Fundamental Anos Iniciais','Anos Iniciais'],
+    ['Ensino Fundamental Anos Finais','Anos Finais'],
+    ['Ensino Médio','Ensino Médio']
+   ];
+   const breakdown=segments.map(([key,label])=>`<div><span>${label}</span><strong>${nextList.filter(a=>a.segment===key).length}</strong></div>`).join('');
+   $('nextExamCard').innerHTML=`<div class="step">PRÓXIMA PROVA</div><h2 style="font-size:42px;margin:8px 0">${new Date(next.exam_date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).toUpperCase()} · ${next.exam_time.slice(0,5)}</h2><p><strong>${nextList.length} candidatos inscritos</strong></p><div class="exam-breakdown">${breakdown}</div>`;
+ }else $('nextExamCard').innerHTML='<p>Nenhuma prova futura cadastrada.</p>';
+ $('upcomingExamDates').innerHTML=examDates.filter(e=>e.active&&e.exam_date>=today).slice(1,4).map(e=>`<p><strong>${new Date(e.exam_date+'T12:00:00').toLocaleDateString('pt-BR')} · ${e.exam_time.slice(0,5)}</strong><br>${valid.filter(a=>a.exam_date===e.exam_date).length} inscritos</p>`).join('')||'<p>Sem outras datas futuras.</p>';
 }
-
 function populateDates(){
  const current=$('dateFilter').value;const dates=[...new Set(applications.map(a=>a.exam_date).filter(Boolean))].sort();
  $('dateFilter').innerHTML='<option value="">Todas as datas</option>'+dates.map(d=>`<option value="${d}">${new Date(d+'T12:00:00').toLocaleDateString('pt-BR')}</option>`).join('');$('dateFilter').value=current;
@@ -60,13 +80,18 @@ function populateDates(){
 }
 function esc(v=''){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
 function formatExamDate(a){return a.exam_date?new Date(a.exam_date+'T12:00:00').toLocaleDateString('pt-BR'):'Visita';}
+function candidatesIgnoringSegment(){
+ const q=$('candidateSearch').value.trim().toLowerCase(),date=$('dateFilter').value,series=$('seriesFilter').value;
+ return activeApplications().filter(a=>(!q||`${a.student_name||''} ${a.guardian_name||''} ${a.current_school||''}`.toLowerCase().includes(q))&&(!date||a.exam_date===date)&&(!series||a.series===series));
+}
 function refreshEducationTabs(){
+ const base=candidatesIgnoringSegment();
  const counts={
-  '':applications.length,
-  'Educação Infantil':applications.filter(a=>a.segment==='Educação Infantil').length,
-  'Ensino Fundamental Anos Iniciais':applications.filter(a=>a.segment==='Ensino Fundamental Anos Iniciais').length,
-  'Ensino Fundamental Anos Finais':applications.filter(a=>a.segment==='Ensino Fundamental Anos Finais').length,
-  'Ensino Médio':applications.filter(a=>a.segment==='Ensino Médio').length
+  '':base.length,
+  'Educação Infantil':base.filter(a=>a.segment==='Educação Infantil').length,
+  'Ensino Fundamental Anos Iniciais':base.filter(a=>a.segment==='Ensino Fundamental Anos Iniciais').length,
+  'Ensino Fundamental Anos Finais':base.filter(a=>a.segment==='Ensino Fundamental Anos Finais').length,
+  'Ensino Médio':base.filter(a=>a.segment==='Ensino Médio').length
  };
  $('tabCountAll').textContent=counts[''];$('tabCountInfantil').textContent=counts['Educação Infantil'];$('tabCountIniciais').textContent=counts['Ensino Fundamental Anos Iniciais'];$('tabCountFinais').textContent=counts['Ensino Fundamental Anos Finais'];$('tabCountMedio').textContent=counts['Ensino Médio'];
  document.querySelectorAll('[data-segment-tab]').forEach(b=>b.classList.toggle('active',b.dataset.segmentTab===activeSegment));
@@ -80,7 +105,7 @@ function refreshSeriesFilter(){
 }
 function filtered(){
  const q=$('candidateSearch').value.trim().toLowerCase(),date=$('dateFilter').value,series=$('seriesFilter').value;
- return applications.filter(a=>(!activeSegment||a.segment===activeSegment)&&(!q||`${a.student_name||''} ${a.guardian_name||''} ${a.current_school||''}`.toLowerCase().includes(q))&&(!date||a.exam_date===date)&&(!series||a.series===series));
+ return activeApplications().filter(a=>(!activeSegment||a.segment===activeSegment)&&(!q||`${a.student_name||''} ${a.guardian_name||''} ${a.current_school||''}`.toLowerCase().includes(q))&&(!date||a.exam_date===date)&&(!series||a.series===series));
 }
 function renderCandidates(){
  refreshEducationTabs();refreshSeriesFilter();
@@ -100,7 +125,7 @@ function renderCandidates(){
  document.querySelectorAll('[data-receipt]').forEach(b=>b.onclick=()=>openReceipt(b.dataset.receipt));
 }
 document.querySelectorAll('[data-segment-tab]').forEach(b=>b.onclick=()=>{activeSegment=b.dataset.segmentTab;$('seriesFilter').value='';refreshSeriesFilter();renderCandidates();});
-['candidateSearch','dateFilter','seriesFilter'].forEach(id=>$(id).oninput=renderCandidates);
+['candidateSearch','dateFilter','seriesFilter'].forEach(id=>{ $(id).oninput=renderCandidates; $(id).onchange=renderCandidates; });
 $('clearFiltersBtn').onclick=()=>{$('candidateSearch').value='';$('dateFilter').value='';$('seriesFilter').value='';renderCandidates();};
 
 async function openReceipt(path){
