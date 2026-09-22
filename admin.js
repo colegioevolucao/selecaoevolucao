@@ -3,7 +3,7 @@ const SUPABASE_URL='https://sqqozfohvkxfkjydxkiw.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_Fcm35rSx0XDCdjtvetyRLg_iymciHct';
 const supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const $=id=>document.getElementById(id);
-let applications=[],examDates=[],editingId=null;
+let applications=[],examDates=[],editingId=null,activeSegment="";
 
 function openMobileMenu(){
   $('sidebar').classList.add('mobile-open');
@@ -59,12 +59,37 @@ function populateDates(){
  $('crmExamDate').innerHTML='<option value="">Selecione</option>'+examDates.filter(e=>e.active).map(e=>`<option value="${e.id}">${new Date(e.exam_date+'T12:00:00').toLocaleDateString('pt-BR')} · ${e.exam_time.slice(0,5)}</option>`).join('');
 }
 function esc(v=''){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
-function filtered(){const q=$('candidateSearch').value.toLowerCase(),date=$('dateFilter').value,seg=$('segmentFilter').value;return applications.filter(a=>(!q||`${a.student_name} ${a.guardian_name} ${a.current_school}`.toLowerCase().includes(q))&&(!date||a.exam_date===date)&&(!seg||a.segment===seg));}
+function formatExamDate(a){return a.exam_date?new Date(a.exam_date+'T12:00:00').toLocaleDateString('pt-BR'):'Visita';}
+function refreshEducationTabs(){
+ const counts={
+  '':applications.length,
+  'Educação Infantil':applications.filter(a=>a.segment==='Educação Infantil').length,
+  'Ensino Fundamental Anos Iniciais':applications.filter(a=>a.segment==='Ensino Fundamental Anos Iniciais').length,
+  'Ensino Fundamental Anos Finais':applications.filter(a=>a.segment==='Ensino Fundamental Anos Finais').length,
+  'Ensino Médio':applications.filter(a=>a.segment==='Ensino Médio').length
+ };
+ $('tabCountAll').textContent=counts[''];$('tabCountInfantil').textContent=counts['Educação Infantil'];$('tabCountIniciais').textContent=counts['Ensino Fundamental Anos Iniciais'];$('tabCountFinais').textContent=counts['Ensino Fundamental Anos Finais'];$('tabCountMedio').textContent=counts['Ensino Médio'];
+ document.querySelectorAll('[data-segment-tab]').forEach(b=>b.classList.toggle('active',b.dataset.segmentTab===activeSegment));
+}
+function refreshSeriesFilter(){
+ const current=$('seriesFilter').value;
+ const series=[...new Set(applications.filter(a=>!activeSegment||a.segment===activeSegment).map(a=>a.series).filter(Boolean))];
+ const order=[...(seriesMap[activeSegment]||[]),...series].filter((v,i,a)=>a.indexOf(v)===i&&series.includes(v));
+ $('seriesFilter').innerHTML='<option value="">Todas as séries</option>'+order.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+ $('seriesFilter').value=order.includes(current)?current:'';
+}
+function filtered(){
+ const q=$('candidateSearch').value.trim().toLowerCase(),date=$('dateFilter').value,series=$('seriesFilter').value;
+ return applications.filter(a=>(!activeSegment||a.segment===activeSegment)&&(!q||`${a.student_name||''} ${a.guardian_name||''} ${a.current_school||''}`.toLowerCase().includes(q))&&(!date||a.exam_date===date)&&(!series||a.series===series));
+}
 function renderCandidates(){
- const list=filtered();$('candidateCount').textContent=`${list.length} candidato${list.length===1?'':'s'} encontrado${list.length===1?'':'s'}`;
+ refreshEducationTabs();refreshSeriesFilter();
+ document.body.classList.toggle('segment-tab-active',Boolean(activeSegment));
+ const list=filtered();
+ const segmentLabel=activeSegment?` em ${activeSegment}`:'';
+ $('candidateCount').textContent=`${list.length} candidato${list.length===1?'':'s'} encontrado${list.length===1?'':'s'}${segmentLabel}`;
  $('candidatesBody').innerHTML=list.map(a=>`<tr>
- <td>${esc(a.student_name)}</td><td>${esc(a.segment)}</td><td>${esc(a.series)}</td><td>${esc(a.guardian_name)}</td><td>${esc(a.guardian_whatsapp)}</td><td>${esc(a.current_school)}</td>
- <td>${a.exam_date?new Date(a.exam_date+'T12:00:00').toLocaleDateString('pt-BR'):'Visita'}</td>
+ <td>${esc(a.student_name)}</td><td class="segment-column">${esc(a.segment)}</td><td>${esc(a.series)}</td><td><strong>${formatExamDate(a)}</strong></td><td>${esc(a.guardian_name)}</td><td>${esc(a.guardian_whatsapp)}</td><td>${esc(a.current_school)}</td>
  <td><span class="source-badge ${a.source==='CRM'?'crm':''}">${esc(a.source||'Link')}</span></td>
  <td><span class="payment-pill ${a.payment_status==='Pagamento confirmado'?'ok':''}">${esc(a.payment_status||'—')}</span></td>
  <td>${a.receipt_path?`<button class="receipt-btn" data-receipt="${esc(a.receipt_path)}">Ver</button>`:'—'}</td>
@@ -74,8 +99,9 @@ function renderCandidates(){
  document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>delCandidate(b.dataset.delete));
  document.querySelectorAll('[data-receipt]').forEach(b=>b.onclick=()=>openReceipt(b.dataset.receipt));
 }
-['candidateSearch','dateFilter','segmentFilter'].forEach(id=>$(id).oninput=renderCandidates);
-$('clearFiltersBtn').onclick=()=>{$('candidateSearch').value='';$('dateFilter').value='';$('segmentFilter').value='';renderCandidates();};
+document.querySelectorAll('[data-segment-tab]').forEach(b=>b.onclick=()=>{activeSegment=b.dataset.segmentTab;$('seriesFilter').value='';refreshSeriesFilter();renderCandidates();});
+['candidateSearch','dateFilter','seriesFilter'].forEach(id=>$(id).oninput=renderCandidates);
+$('clearFiltersBtn').onclick=()=>{$('candidateSearch').value='';$('dateFilter').value='';$('seriesFilter').value='';renderCandidates();};
 
 async function openReceipt(path){
  const {data,error}=await supabase.storage.from('payment-receipts').createSignedUrl(path,60);
@@ -111,11 +137,30 @@ async function delCandidate(id){
 }
 
 $('exportPdfBtn').onclick=()=>{
- const list=filtered();if(!list.length)return alert('Não há candidatos para gerar o PDF.');
- const{jsPDF}=window.jspdf,doc=new jsPDF({orientation:'landscape'});doc.setFontSize(18);doc.text('Colégio Evolução — Seleção 2027',14,16);
- const filterDate=$('dateFilter').value;doc.setFontSize(10);doc.text(`${filterDate?'Data: '+new Date(filterDate+'T12:00:00').toLocaleDateString('pt-BR'):'Todas as datas'} | ${list.length} candidato(s)`,14,23);
- doc.autoTable({startY:29,head:[['Candidato','Segmento','Série','Responsável','WhatsApp','Escola','Data','Pagamento','Status']],body:list.map(a=>[a.student_name,a.segment,a.series,a.guardian_name,a.guardian_whatsapp,a.current_school,a.exam_date?new Date(a.exam_date+'T12:00:00').toLocaleDateString('pt-BR'):'Visita',a.payment_status||'—',a.status]),styles:{fontSize:8}});
- doc.save(`selecao-2027-${filterDate||'todos'}.pdf`);
+ try{
+  const list=filtered();if(!list.length)return alert('Não há candidatos para gerar o PDF.');
+  if(!window.jspdf?.jsPDF)return alert('O gerador de PDF não carregou. Atualize a página e tente novamente.');
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  if(typeof doc.autoTable!=='function')return alert('O módulo da tabela do PDF não carregou. Atualize a página e tente novamente.');
+  const filterDate=$('dateFilter').value,series=$('seriesFilter').value;
+  const scope=activeSegment||'Todos os níveis de ensino';
+  doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('Colégio Evolução — Seleção 2027',14,15);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text(`Lista de candidatos | ${scope}`,14,22);
+  const details=[series?`Série: ${series}`:'Todas as séries',filterDate?`Prova: ${new Date(filterDate+'T12:00:00').toLocaleDateString('pt-BR')}`:'Todas as datas',`Total: ${list.length} candidato(s)`].join('  |  ');
+  doc.text(details,14,28);
+  doc.autoTable({
+   startY:34,
+   head:[['Candidato','Série','Data da prova','Responsável','WhatsApp','Escola','Pagamento','Status']],
+   body:list.map(a=>[a.student_name||'—',a.series||'—',formatExamDate(a),a.guardian_name||'—',a.guardian_whatsapp||'—',a.current_school||'—',a.payment_status||'—',a.status||'—']),
+   styles:{fontSize:7.5,cellPadding:2,overflow:'linebreak'},
+   headStyles:{fontStyle:'bold'},
+   columnStyles:{0:{cellWidth:38},1:{cellWidth:22},2:{cellWidth:24},3:{cellWidth:40},4:{cellWidth:28},5:{cellWidth:42},6:{cellWidth:35},7:{cellWidth:35}},
+   margin:{left:10,right:10}
+  });
+  const slug=(activeSegment||'todos').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  doc.save(`selecao-2027-${slug}${filterDate?'-'+filterDate:''}.pdf`);
+ }catch(error){console.error('Erro ao gerar PDF:',error);alert('Não foi possível gerar o PDF. Abra o console para ver o erro técnico.');}
 };
 
 function renderExams(){

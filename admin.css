@@ -539,3 +539,29 @@
   .panel{padding:16px}
   .stat strong{font-size:28px}
 }
+
+/* Abas de nível de ensino — candidatos */
+.education-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:24px;padding-bottom:4px;
+}
+.education-tab{
+  border:1px solid var(--line);background:#fff;color:var(--blue);border-radius:999px;
+  padding:10px 14px;font:600 13px "Poppins",sans-serif;cursor:pointer;white-space:nowrap;
+}
+.education-tab span{
+  display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;
+  margin-left:6px;padding:0 7px;border-radius:999px;background:#f3f6fb;font-size:11px;
+}
+.education-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.education-tab.active span{background:rgba(255,255,255,.18);color:#fff}
+.candidate-filters{grid-template-columns:minmax(220px,2fr) minmax(150px,1fr) minmax(150px,1fr) auto}
+
+@media(min-width:901px){
+  /* Em uma aba específica, o segmento já está indicado no topo; evita repetição visual. */
+  body.segment-tab-active .segment-column{display:none}
+}
+@media(max-width:900px){
+  .education-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px}
+  .education-tab{flex:0 0 auto}
+  .candidate-filters{grid-template-columns:1fr}
+}

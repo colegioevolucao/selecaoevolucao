@@ -6,7 +6,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./admin.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="dashboard-body">
@@ -73,16 +73,18 @@
             <div class="toolbar-actions"><button id="addCandidateBtn" class="btn primary">+ ADICIONAR ALUNO</button><button id="exportPdfBtn" class="btn ghost">GERAR PDF</button></div>
           </div>
 
-          <div class="filters">
+          <div id="educationTabs" class="education-tabs" role="tablist" aria-label="Níveis de ensino">
+            <button class="education-tab active" data-segment-tab="" role="tab">Todos <span id="tabCountAll">0</span></button>
+            <button class="education-tab" data-segment-tab="Educação Infantil" role="tab">Infantil <span id="tabCountInfantil">0</span></button>
+            <button class="education-tab" data-segment-tab="Ensino Fundamental Anos Iniciais" role="tab">Anos Iniciais <span id="tabCountIniciais">0</span></button>
+            <button class="education-tab" data-segment-tab="Ensino Fundamental Anos Finais" role="tab">Anos Finais <span id="tabCountFinais">0</span></button>
+            <button class="education-tab" data-segment-tab="Ensino Médio" role="tab">Ensino Médio <span id="tabCountMedio">0</span></button>
+          </div>
+
+          <div class="filters candidate-filters">
             <input id="candidateSearch" type="search" placeholder="Buscar aluno, responsável ou escola">
             <select id="dateFilter"><option value="">Todas as datas</option></select>
-            <select id="segmentFilter">
-              <option value="">Todos os segmentos</option>
-              <option>Educação Infantil</option>
-              <option>Ensino Fundamental Anos Iniciais</option>
-              <option>Ensino Fundamental Anos Finais</option>
-              <option>Ensino Médio</option>
-            </select>
+            <select id="seriesFilter"><option value="">Todas as séries</option></select>
             <button id="clearFiltersBtn" class="btn ghost">Limpar filtros</button>
           </div>
           <div id="candidateCount" class="filter-summary"></div>
@@ -90,8 +92,7 @@
           <div style="overflow:auto;margin-top:12px">
             <table>
               <thead><tr>
-                <th>Candidato</th><th>Segmento</th><th>Série</th><th>Responsável</th><th>WhatsApp</th><th>Escola</th>
-                <th>Data</th><th>Origem</th><th>Pagamento</th><th>Comprovante</th><th>Status</th><th>Ações</th>
+                <th>Candidato</th><th class="segment-column">Segmento</th><th>Série</th><th>Data da prova</th><th>Responsável</th><th>WhatsApp</th><th>Escola</th><th>Origem</th><th>Pagamento</th><th>Comprovante</th><th>Status</th><th>Ações</th>
               </tr></thead>
               <tbody id="candidatesBody"></tbody>
             </table>
